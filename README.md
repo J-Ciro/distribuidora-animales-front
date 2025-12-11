@@ -1,3 +1,10 @@
+# Quick Links
+
+- [Copilot Instructions](../copilot-instructions.md)
+- [Architecture](../ARCHITECTURE.md)
+- [Product](../PRODUCT.md)
+- [Contributing](../CONTRIBUTING.md)
+
 # 🐾 Distribuidora Perros y Gatos – Frontend (React)
 
 Frontend del MVP del sistema distribuido de gestión de pedidos.  
