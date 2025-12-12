@@ -580,7 +580,7 @@ Cada HU incluye:
 Para preguntas sobre las HU de frontend, consultar:
 1. El archivo específico de la HU en este directorio
 2. `../README.md` del proyecto para setup general
-3. Backend HU en `../Distribuidora_Perros_Gatos_back/HU/` para contratos de API
+3. Backend HU en `../distribuidora-animales-back/HU/` para contratos de API
 
 ---
 

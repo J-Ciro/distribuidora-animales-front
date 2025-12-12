@@ -104,7 +104,7 @@ try {
 } catch {
     Write-Host "  ⚠ Backend no disponible en http://localhost:8000" -ForegroundColor Yellow
     Write-Host "  Asegúrate de iniciar el backend primero ejecutando:" -ForegroundColor Yellow
-    Write-Host "    cd ..\Distribuidora_Perros_Gatos_back\Distribuidora_Perros_Gatos_back" -ForegroundColor Gray
+    Write-Host "    cd ..\distribuidora-animales-back\distribuidora-animales-back" -ForegroundColor Gray
     Write-Host "    .\setup.ps1" -ForegroundColor Gray
     $backendOk = $false
 }

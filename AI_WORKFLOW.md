@@ -22,7 +22,7 @@ Si es tu primera vez clonando el repositorio del frontend:
 2. **Clonar repositorio**:
    ```powershell
    git clone <url-del-repositorio-frontend>
-   cd Distribuidora_Perros_Gatos_front
+   cd distribuidora-animales-front
    ```
 
 3. **Instalación rápida**:
@@ -49,12 +49,12 @@ Si es tu primera vez con todo el proyecto:
 
 ```powershell
 # 1. Setup Backend (obligatorio primero)
-cd Distribuidora_Perros_Gatos_back
+cd distribuidora-animales-back
 .\fix-migrations.ps1
 .\setup.ps1
 
 # 2. Setup Frontend (después de que backend esté corriendo)
-cd ..\Distribuidora_Perros_Gatos_front
+cd ..\distribuidora-animales-front
 npm install
 .\setup-env.ps1
 npm start
@@ -152,11 +152,11 @@ npm run eject          # ⚠️ Irreversible - expone configuración de Webpack
 
 ```powershell
 # 1. Asegurarse de que backend esté corriendo
-cd ..\Distribuidora_Perros_Gatos_back
+cd ..\distribuidora-animales-back
 docker-compose ps
 
 # 2. Iniciar frontend
-cd ..\Distribuidora_Perros_Gatos_front
+cd ..\distribuidora-animales-front
 npm start
 
 # 3. Trabajar en componentes/páginas...

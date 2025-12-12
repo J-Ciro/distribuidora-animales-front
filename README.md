@@ -27,7 +27,7 @@ Este frontend se comunica con el backend mediante API REST y muestra el catálog
 ```powershell
 # 1. Clonar el repositorio
 git clone <url-del-repositorio>
-cd Distribuidora_Perros_Gatos_front
+cd distribuidora-animales-front
 
 # 2. Instalar dependencias
 npm install
@@ -94,11 +94,11 @@ Asegúrate de que el backend esté corriendo:
 
 ```powershell
 # En el directorio del backend
-cd ..\Distribuidora_Perros_Gatos_back
+cd ..\distribuidora-animales-back
 .\setup.ps1
 ```
 
-Ver [Backend README](../Distribuidora_Perros_Gatos_back/README.md) para más detalles.
+Ver [Backend README](../distribuidora-animales-back/README.md) para más detalles.
 
 ### 3. Configurar Variables de Entorno
 
@@ -336,12 +336,12 @@ $env:PORT=3001; npm start
 
 ```powershell
 # 1. Configurar Backend
-cd Distribuidora_Perros_Gatos_back
+cd distribuidora-animales-back
 .\fix-migrations.ps1
 .\setup.ps1
 
 # 2. Configurar Frontend
-cd ..\Distribuidora_Perros_Gatos_front
+cd ..\distribuidora-animales-front
 npm install
 .\setup-env.ps1
 

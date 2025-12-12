@@ -117,7 +117,7 @@ try {
 } catch {
     Write-Host "⚠ Backend no está disponible" -ForegroundColor Yellow
     Write-Host "Asegúrate de ejecutar el backend primero:" -ForegroundColor Yellow
-    Write-Host "  cd ..\Distribuidora_Perros_Gatos_back" -ForegroundColor DarkGray
+    Write-Host "  cd ..\distribuidora-animales-back" -ForegroundColor DarkGray
     Write-Host "  .\INSTALL.ps1" -ForegroundColor DarkGray
 }
 
