@@ -21,12 +21,10 @@
     "redux-mock-store": "^1.5.5"
   },
   "scripts": {
-    "prestart": "node check-env.js",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "setup": "node check-env.js || echo Por favor configura el archivo .env"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [
