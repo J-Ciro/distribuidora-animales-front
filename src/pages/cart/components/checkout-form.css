@@ -55,6 +55,13 @@
   color: #333;
 }
 
+.label-required-hint {
+  color: #999;
+  font-weight: 400;
+  font-size: 12px;
+}
+
+
 .form-group select {
   width: 100%;
   padding: 12px;

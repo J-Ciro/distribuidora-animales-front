@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Input, Select } from '../../../components/ui/index';
+import { AddressSelector } from './AddressSelector';
 import './checkout-form.css';
 
 const PAYMENT_METHODS = [
@@ -13,10 +14,7 @@ const PAYMENT_METHODS = [
 
 export const CheckoutForm = ({ onSubmit, onCancel, isProcessing }) => {
   const [formData, setFormData] = useState({
-    direccion_entrega: '',
-    municipio: '',
-    departamento: '',
-    pais: 'Colombia',
+    direccion_id: null, // Cambio de direccion_entrega a direccion_id
     telefono_contacto: '',
     metodo_pago: 'Efectivo',
     nota_especial: '',
@@ -32,23 +30,19 @@ export const CheckoutForm = ({ onSubmit, onCancel, isProcessing }) => {
     }
   };
 
+  const handleAddressChange = (selectedDireccionId) => {
+    setFormData(prev => ({ ...prev, direccion_id: selectedDireccionId }));
+    // Clear error when user selects an address
+    if (errors.direccion_id) {
+      setErrors(prev => ({ ...prev, direccion_id: '' }));
+    }
+  };
+
   const validateForm = () => {
     const newErrors = {};
 
-    if (!formData.direccion_entrega || formData.direccion_entrega.length < 10) {
-      newErrors.direccion_entrega = 'La dirección debe tener al menos 10 caracteres';
-    }
-
-    if (!formData.municipio || formData.municipio.length < 3) {
-      newErrors.municipio = 'El municipio es requerido';
-    }
-
-    if (!formData.departamento || formData.departamento.length < 3) {
-      newErrors.departamento = 'El departamento es requerido';
-    }
-
-    if (!formData.pais || formData.pais.length < 3) {
-      newErrors.pais = 'El país es requerido';
+    if (!formData.direccion_id) {
+      newErrors.direccion_id = 'Debes seleccionar o agregar una dirección de entrega';
     }
 
     if (!formData.telefono_contacto) {
@@ -69,6 +63,12 @@ export const CheckoutForm = ({ onSubmit, onCancel, isProcessing }) => {
     e.preventDefault();
     if (validateForm()) {
       onSubmit(formData);
+    } else {
+      // Show first error in console for debugging
+      const firstError = Object.values(errors).find(err => err);
+      if (firstError) {
+        console.warn('Validation error:', firstError);
+      }
     }
   };
 
@@ -78,88 +78,35 @@ export const CheckoutForm = ({ onSubmit, onCancel, isProcessing }) => {
         <h2 className="checkout-form-title">Información de Envío</h2>
         
         <form onSubmit={handleSubmit} className="checkout-form">
+          {/* Selector de direcciones - SOLID: Dependency Injection via props */}
           <div className="form-group">
-            <label htmlFor="direccion">Dirección de Entrega *</label>
-            <Input
-              id="direccion"
-              type="text"
-              value={formData.direccion_entrega}
-              onChange={(e) => handleChange('direccion_entrega', e.target.value)}
-              placeholder="Ej: Calle 123 #45-67, Apto 301"
-              className={errors.direccion_entrega ? 'input-error' : ''}
-              disabled={isProcessing}
+            <label>
+              Dirección de Entrega *
+              {!formData.direccion_id && <span className="label-required-hint"> (selecciona una)</span>}
+            </label>
+            <AddressSelector
+              selectedDireccionId={formData.direccion_id}
+              onAddressChange={handleAddressChange}
             />
-            {errors.direccion_entrega && (
-              <span className="error-message">{errors.direccion_entrega}</span>
+            {errors.direccion_id && (
+              <span className="error-message">{errors.direccion_id}</span>
             )}
           </div>
 
-          <div className="form-row">
-            <div className="form-group">
-              <label htmlFor="municipio">Municipio/Ciudad *</label>
-              <Input
-                id="municipio"
-                type="text"
-                value={formData.municipio}
-                onChange={(e) => handleChange('municipio', e.target.value)}
-                placeholder="Ej: Bogotá"
-                className={errors.municipio ? 'input-error' : ''}
-                disabled={isProcessing}
-              />
-              {errors.municipio && (
-                <span className="error-message">{errors.municipio}</span>
-              )}
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="departamento">Departamento/Estado *</label>
-              <Input
-                id="departamento"
-                type="text"
-                value={formData.departamento}
-                onChange={(e) => handleChange('departamento', e.target.value)}
-                placeholder="Ej: Cundinamarca"
-                className={errors.departamento ? 'input-error' : ''}
-                disabled={isProcessing}
-              />
-              {errors.departamento && (
-                <span className="error-message">{errors.departamento}</span>
-              )}
-            </div>
-          </div>
-
-          <div className="form-row">
-            <div className="form-group">
-              <label htmlFor="pais">País *</label>
-              <Input
-                id="pais"
-                type="text"
-                value={formData.pais}
-                onChange={(e) => handleChange('pais', e.target.value)}
-                placeholder="Colombia"
-                className={errors.pais ? 'input-error' : ''}
-                disabled={isProcessing}
-              />
-              {errors.pais && (
-                <span className="error-message">{errors.pais}</span>
-              )}
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="telefono">Teléfono de Contacto *</label>
-              <Input
-                id="telefono"
-                type="tel"
-                value={formData.telefono_contacto}
-                onChange={(e) => handleChange('telefono_contacto', e.target.value)}
-                placeholder="Ej: 3001234567"
-                className={errors.telefono_contacto ? 'input-error' : ''}
-                disabled={isProcessing}
-              />
-              {errors.telefono_contacto && (
-                <span className="error-message">{errors.telefono_contacto}</span>
-              )}
-            </div>
+          <div className="form-group">
+            <label htmlFor="telefono">Teléfono de Contacto *</label>
+            <Input
+              id="telefono"
+              type="tel"
+              value={formData.telefono_contacto}
+              onChange={(e) => handleChange('telefono_contacto', e.target.value)}
+              placeholder="Ej: 3001234567"
+              className={errors.telefono_contacto ? 'input-error' : ''}
+              disabled={isProcessing}
+            />
+            {errors.telefono_contacto && (
+              <span className="error-message">{errors.telefono_contacto}</span>
+            )}
           </div>
 
           <div className="form-group">

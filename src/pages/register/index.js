@@ -20,7 +20,7 @@ export const RegisterPage = () => {
     cedula: '',
     email: '',
     telefono: '',
-    direccion_envio: '',
+    // direccion_envio: REMOVED per HU-REFACTOR-01
     password: '',
     confirmPassword: '',
     tienePerros: false,
@@ -72,9 +72,7 @@ export const RegisterPage = () => {
       newErrors.telefono = 'El teléfono debe tener al menos 8 dígitos';
     }
 
-    if (!formData.direccion_envio) {
-      newErrors.direccion_envio = 'La dirección de envío es requerida';
-    }
+    // HU-REFACTOR-01: direccion_envio REMOVED from registration - no longer required
 
     // Validate password
     if (!formData.password) {
@@ -102,7 +100,9 @@ export const RegisterPage = () => {
     e.preventDefault();
 
     if (!validateForm()) {
-      toast.error('Por favor, completa todos los campos obligatorios.');
+      // Muestra un mensaje más útil con el primer error encontrado
+      const firstError = Object.values(errors).find(Boolean);
+      toast.error(firstError || 'Corrige los campos marcados.');
       return;
     }
 
@@ -123,7 +123,7 @@ export const RegisterPage = () => {
       nombre: formData.nombreCompleto,
       cedula: formData.cedula,
       telefono: formData.telefono,
-      direccion_envio: formData.direccion_envio,
+      // direccion_envio: REMOVED per HU-REFACTOR-01 - address collected at checkout
       preferencia_mascotas: preferencia_mascotas,
     };
 
@@ -190,16 +190,8 @@ export const RegisterPage = () => {
             disabled={isLoading}
           />
 
-          <Input
-            label="Dirección de envío"
-            name="direccion_envio"
-            value={formData.direccion_envio}
-            onChange={handleChange}
-            error={errors.direccion_envio}
-            placeholder="Calle 123, Ciudad"
-            required
-            disabled={isLoading}
-          />
+          {/* HU-REFACTOR-01: direccion_envio field REMOVED from registration */}
+          {/* Address will be collected at checkout */}
 
           <Input
             label="Contraseña"
