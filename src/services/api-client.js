@@ -4,7 +4,7 @@ import { logout as logoutAction } from '../redux/actions/auth-actions';
 import { toast } from '../utils/toast';
 
 const apiClient = axios.create({
-  baseURL: process.env.REACT_APP_API_URL || 'http://localhost:8000/api',
+  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8000/api',
   headers: {
     'Content-Type': 'application/json',
   },
@@ -12,7 +12,7 @@ const apiClient = axios.create({
 });
 
 const apiClient2 = axios.create({
-  baseURL: process.env.REACT_APP_API_URL || 'http://localhost:8000/api',
+  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8000/api',
   headers: {
     'Content-Type': 'application/json',
   },

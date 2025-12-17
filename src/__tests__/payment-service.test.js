@@ -1,12 +1,14 @@
+import { describe, test, expect, beforeEach, afterEach, vi } from 'vitest'
+
 import { paymentService } from '../services/payment-service';
 import apiClient from '../services/api-client';
 
 // Mock the api-client
-jest.mock('../services/api-client');
+vi.mock('../services/api-client');
 
 describe('Payment Service', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   describe('createPaymentIntent', () => {

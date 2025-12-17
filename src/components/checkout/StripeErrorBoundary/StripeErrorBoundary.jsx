@@ -53,7 +53,7 @@ export class StripeErrorBoundary extends React.Component {
               Ocurrió un error al cargar el sistema de pagos. Por favor, recarga la página o intenta más tarde.
             </p>
 
-            {process.env.NODE_ENV === 'development' && this.state.error && (
+            {import.meta.env.DEV && this.state.error && (
               <details className="stripe-error-boundary__details">
                 <summary>Detalles del error (solo en desarrollo)</summary>
                 <pre>{this.state.error.toString()}</pre>

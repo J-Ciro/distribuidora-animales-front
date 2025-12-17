@@ -1,6 +1,6 @@
 import { loadStripe } from '@stripe/stripe-js';
 
-const stripePublishableKey = process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY;
+const stripePublishableKey = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY;
 
 if (!stripePublishableKey) {
   console.error('⚠️ Stripe publishable key not configured. Please set REACT_APP_STRIPE_PUBLISHABLE_KEY in your .env file.');

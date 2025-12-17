@@ -1,15 +1,17 @@
+import { describe, test, expect, beforeEach, afterEach, vi } from 'vitest'
+
 /**
  * Tests para el servicio de autenticación
  */
 
 // Mock del apiClient ANTES de importar cualquier cosa
-jest.mock('../services/api-client', () => ({
+vi.mock('../services/api-client', () => ({
   __esModule: true,
   default: {
-    post: jest.fn(),
-    get: jest.fn(),
-    put: jest.fn(),
-    delete: jest.fn()
+    post: vi.fn(),
+    get: vi.fn(),
+    put: vi.fn(),
+    delete: vi.fn()
   }
 }));
 
@@ -18,7 +20,7 @@ import apiClient from '../services/api-client';
 
 describe('AuthService - Login', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     localStorage.clear();
   });
 
@@ -94,7 +96,7 @@ describe('AuthService - Login', () => {
 
 describe('AuthService - Register', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   test('debe registrar usuario exitosamente', async () => {
@@ -144,7 +146,7 @@ describe('AuthService - Register', () => {
 
 describe('AuthService - Verify Email', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   test('debe verificar email con código correcto', async () => {
@@ -171,7 +173,7 @@ describe('AuthService - Verify Email', () => {
 
 describe('AuthService - Resend Verification Code', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   test('debe reenviar código de verificación', async () => {
@@ -195,7 +197,7 @@ describe('AuthService - Resend Verification Code', () => {
 
 describe('AuthService - Logout', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     localStorage.clear();
   });
 
@@ -219,7 +221,7 @@ describe('AuthService - Logout', () => {
 
 describe('AuthService - Listar Productos', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   test('debe listar productos exitosamente', async () => {
