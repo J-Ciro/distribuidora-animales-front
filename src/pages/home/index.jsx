@@ -5,7 +5,7 @@ import { carouselService } from '../../services/carousel-service';
 import { useCart } from '../../hooks/use-cart';
 import { useContext } from 'react';
 import CartContext from '../../modules/cart/context/CartContext';
-import { ProductCard } from '../../components/ui';
+import { ProductCard, Loader } from '../../components/ui';
 import Hero from '../../components/hero/Hero';
 import FeaturedSection from '../../components/featured/FeaturedSection';
 import SwiperCarousel from '../../components/carousel/SwiperCarousel';
@@ -15,7 +15,7 @@ import './style.css';
 
 
 
-const CategorySection = ({ categoryName, subcategories, onAddToCart }) => {
+const CategorySection = ({ categoryName, subcategories, onAddToCart, visibleCounts = {}, onLoadMoreSubcategory }) => {
   if (!subcategories || Object.keys(subcategories).length === 0) {
     return null;
   }
@@ -27,12 +27,14 @@ const CategorySection = ({ categoryName, subcategories, onAddToCart }) => {
       </h2>
       {Object.entries(subcategories).map(([subcategoryName, products]) => {
         if (!products || products.length === 0) return null;
-        
+        const key = `${categoryName}||${subcategoryName}`;
+        const visible = visibleCounts[key] ?? 3;
+        const shown = (products || []).slice(0, visible);
         return (
           <div key={subcategoryName} className="subcategory-section">
             <h3 className="subcategory-title">{subcategoryName}</h3>
             <div className="products-grid">
-              {products.map((product) => (
+              {shown.map((product) => (
                 <ProductCard
                   key={product.id}
                   product={product}
@@ -40,6 +42,11 @@ const CategorySection = ({ categoryName, subcategories, onAddToCart }) => {
                 />
               ))}
             </div>
+            {products.length > visible && (
+              <div style={{ textAlign: 'center', marginTop: 8 }}>
+                <button className="btn" onClick={() => onLoadMoreSubcategory && onLoadMoreSubcategory(categoryName, subcategoryName)}>Ver más</button>
+              </div>
+            )}
           </div>
         );
       })}
@@ -52,8 +59,16 @@ export const HomePage = () => {
   const { catalog } = useSelector((state) => state.productos);
   const carousel = useSelector((state) => state.carousel);
   const [isLoading, setIsLoading] = useState(true);
+  const [skip, setSkip] = useState(0);
+  const [limit] = useState(20);
+  const [hasMore, setHasMore] = useState(true);
+  const [loadError, setLoadError] = useState(false);
   const [activeFilter, setActiveFilter] = useState(null);
   const [filteredCatalog, setFilteredCatalog] = useState({});
+  const [minLoading, setMinLoading] = useState(false);
+  const [globalDisplayCount, setGlobalDisplayCount] = useState(6);
+  const [subVisible, setSubVisible] = useState({});
+  const [filteredDisplayCount, setFilteredDisplayCount] = useState(3);
   
   // Call both hooks unconditionally; prefer new CartContext when available
   const legacyCart = useCart();
@@ -64,24 +79,35 @@ export const HomePage = () => {
   };
 
   useEffect(() => {
-    loadCatalog();
+    // initial load + ensure loader visible ~2s
+    setMinLoading(true);
+    const t = setTimeout(() => setMinLoading(false), 2000);
+    loadCatalog({ skip: 0, append: false });
     loadCarousel();
     // eslint-disable-next-line react-hooks/exhaustive-deps
+    return () => clearTimeout(t);
   }, []);
 
   useEffect(() => {
     // Apply filter when activeFilter or catalog changes
     if (!activeFilter) {
       setFilteredCatalog(catalog);
+      // reset global pagination when showing all
+      setGlobalDisplayCount(6);
+      setSubVisible({});
     } else {
       filterCatalogByCategory(activeFilter);
+      // when filtering to a category, initialize filtered list pagination
+      setFilteredDisplayCount(3);
+      setSubVisible({});
     }
   }, [activeFilter, catalog]);
 
-  const loadCatalog = async () => {
+  const loadCatalog = async ({ skip = 0, append = false } = {}) => {
     try {
+      setLoadError(false);
       setIsLoading(true);
-      const data = await productosService.getCatalogPublic();
+      const data = await productosService.getCatalogPublic({ skip, limit });
 
       // If backend returns an array of products, transform it into the
       // expected catalog shape: { categoryName: { subcategoryName: [products] } }
@@ -112,10 +138,28 @@ export const HomePage = () => {
           return acc;
         }, {});
       }
+      if (!append) {
+        dispatch({ type: 'FETCH_CATALOG_SUCCESS', payload: catalogPayload });
+      } else {
+        // Append products to existing catalog structure
+        // Merge catalogPayload into existing catalog state
+        const current = { ...catalog };
+        Object.entries(catalogPayload).forEach(([catName, subcats]) => {
+          if (!current[catName]) current[catName] = {};
+          Object.entries(subcats).forEach(([subName, products]) => {
+            if (!current[catName][subName]) current[catName][subName] = [];
+            current[catName][subName] = current[catName][subName].concat(products);
+          });
+        });
+        dispatch({ type: 'FETCH_CATALOG_SUCCESS', payload: current });
+      }
 
-      dispatch({ type: 'FETCH_CATALOG_SUCCESS', payload: catalogPayload });
+      // Update pagination state
+      setSkip(skip + (Array.isArray(data) ? data.length : 0));
+      setHasMore(Array.isArray(data) && data.length === limit);
     } catch (error) {
       console.error('Error loading catalog:', error);
+      setLoadError(true);
       if (!error?._toastsShown) toast.error('Error al cargar el catálogo de productos');
     } finally {
       setIsLoading(false);
@@ -145,6 +189,14 @@ export const HomePage = () => {
     setActiveFilter(categoryId);
   };
 
+  const onLoadMoreSubcategory = (categoryName, subcategoryName) => {
+    const key = `${categoryName}||${subcategoryName}`;
+    setSubVisible((s) => ({ ...s, [key]: (s[key] || 3) + 3 }));
+  };
+
+  const onLoadMoreGlobal = () => setGlobalDisplayCount((c) => c + 6);
+  const onLoadMoreFiltered = () => setFilteredDisplayCount((c) => c + 3);
+
   const loadCarousel = async () => {
     try {
       const data = await carouselService.getCarouselPublic();
@@ -171,10 +223,16 @@ export const HomePage = () => {
 
   // Replaced manual scroll logic with SwiperCarousel component.
 
-  if (isLoading) {
+  if (minLoading || (isLoading && skip === 0)) {
     return (
       <div className="home-loading">
-        <p>Cargando catálogo...</p>
+        <Loader />
+        {loadError && (
+          <div style={{ textAlign: 'center', marginTop: 12 }}>
+            <p>No pudimos cargar los productos.</p>
+            <button className="btn" onClick={() => loadCatalog({ skip: 0, append: false })}>Reintentar</button>
+          </div>
+        )}
       </div>
     );
   }
@@ -199,14 +257,60 @@ export const HomePage = () => {
       />
 
       <div className="catalog-container">
-        {Object.entries(filteredCatalog).map(([categoryName, subcategories]) => (
-          <CategorySection
-            key={categoryName}
-            categoryName={categoryName}
-            subcategories={subcategories}
-            onAddToCart={handleAddToCart}
-          />
-        ))}
+        {(!activeFilter) ? (
+          (() => {
+            // Flat list across categories, paginated by globalDisplayCount
+            const flat = Object.entries(catalog).reduce((acc, [categoryName, subcats]) => {
+              Object.entries(subcats || {}).forEach(([subName, products]) => {
+                (products || []).forEach((p) => acc.push({ ...p, _categoryName: categoryName, _subName: subName }));
+              });
+              return acc;
+            }, []);
+            const shown = flat.slice(0, globalDisplayCount);
+            return (
+              <div>
+                <div className="products-grid">
+                  {shown.map((product) => (
+                    <ProductCard key={product.id} product={product} onAddToCart={handleAddToCart} />
+                  ))}
+                </div>
+                {flat.length > shown.length && (
+                  <div style={{ textAlign: 'center', margin: '24px 0' }}>
+                    <button className="btn" onClick={onLoadMoreGlobal}>Ver más</button>
+                  </div>
+                )}
+              </div>
+            );
+          })()
+        ) : (
+          // filtered by a category -> show a flat list of products for that category, paginated by 2
+          (() => {
+            const flatFiltered = Object.entries(catalog).reduce((acc, [categoryName, subcats]) => {
+              Object.entries(subcats || {}).forEach(([subName, products]) => {
+                (products || []).forEach((p) => {
+                  const prodCatId = p.categoriaId ?? p.categoria?.id ?? null;
+                  if (String(prodCatId) === String(activeFilter)) acc.push(p);
+                });
+              });
+              return acc;
+            }, []);
+            const shown = flatFiltered.slice(0, filteredDisplayCount);
+            return (
+              <div>
+                <div className="products-grid">
+                  {shown.map((product) => (
+                    <ProductCard key={product.id} product={product} onAddToCart={handleAddToCart} />
+                  ))}
+                </div>
+                {flatFiltered.length > shown.length && (
+                  <div style={{ textAlign: 'center', margin: '24px 0' }}>
+                    <button className="btn" onClick={onLoadMoreFiltered}>Ver más</button>
+                  </div>
+                )}
+              </div>
+            );
+          })()
+        )}
       </div>
 
       {Object.keys(filteredCatalog).length === 0 && !isLoading && (
@@ -218,6 +322,24 @@ export const HomePage = () => {
           </p>
         </div>
       )}
+      {loadError && (
+        <div style={{textAlign: 'center', marginTop: 24}}>
+          <p>No pudimos cargar los productos.</p>
+          <button className="btn" onClick={() => loadCatalog({ skip: 0, append: false })}>Reintentar</button>
+        </div>
+      )}
+      {/* Load more button for pagination */}
+      {hasMore && (
+        <div style={{ textAlign: 'center', margin: '24px 0' }}>
+          {isLoading ? (
+            <div style={{ display: 'inline-block' }}><Loader message="Cargando..." /></div>
+          ) : (
+            <button className="btn" onClick={() => loadCatalog({ skip, append: true })}>Ver más</button>
+          )}
+        </div>
+      )}
+
+      {/* Error handling area: if loading failed, show retry - handled via toast on error; alternatively implement explicit retry state if needed */}
     </div>
   );
 };
