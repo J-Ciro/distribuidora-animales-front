@@ -10,7 +10,10 @@ import VerificationCodePage from './pages/verification-code';
 import { LoginPage } from './pages/login';
 import { RegisterPage } from './pages/register';
 import { CartPage } from './pages/cart';
-import MyOrders from './pages/my-orders/MyOrders';
+import MyOrders from './pages/mis-pedidos/MyOrders';
+import { CheckoutPage } from './pages/checkout/CheckoutPage';
+import { PaymentSuccessPage } from './pages/checkout/PaymentSuccessPage';
+import { PaymentFailedPage } from './pages/checkout/PaymentFailedPage';
 import { AdminPedidosPage } from './pages/Admin/pedidos';
 import { AdminUsuariosPage } from './pages/Admin/usuarios';
 import { AdminUsuarioDetailPage } from './pages/Admin/usuarios/detail';
@@ -135,6 +138,14 @@ function App() {
         }
       />
       <Route
+        path="/home"
+        element={
+          <MainLayout>
+            <HomePage />
+          </MainLayout>
+        }
+      />
+      <Route
         path="/login"
         element={
           <MainLayout>
@@ -176,6 +187,38 @@ function App() {
           <ProtectedRoute>
             <MainLayout>
               <MyOrders />
+            </MainLayout>
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Checkout and Payment routes */}
+      <Route
+        path="/checkout/:pedidoId"
+        element={
+          <ProtectedRoute>
+            <MainLayout>
+              <CheckoutPage />
+            </MainLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/payment-success/:pedidoId"
+        element={
+          <ProtectedRoute>
+            <MainLayout>
+              <PaymentSuccessPage />
+            </MainLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/payment-failed/:pedidoId"
+        element={
+          <ProtectedRoute>
+            <MainLayout>
+              <PaymentFailedPage />
             </MainLayout>
           </ProtectedRoute>
         }

@@ -8,7 +8,7 @@
  * @returns {string} URL base del API
  */
 export const getApiBaseUrl = () => {
-  const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:8000/api';
+  const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
   return apiUrl.replace(/\/api\/?$/, '');
 };
 
@@ -41,7 +41,7 @@ export const getImageUrl = (path) => {
  * @returns {string} URL completa del endpoint
  */
 export const getApiUrl = (endpoint = '') => {
-  const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:8000/api';
+  const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
   const cleanEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
   return `${apiUrl}${cleanEndpoint}`;
 };

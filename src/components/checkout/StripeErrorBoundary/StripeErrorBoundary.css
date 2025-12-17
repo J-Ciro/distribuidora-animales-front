@@ -1,0 +1,147 @@
+.stripe-error-boundary {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background: #f9fafb;
+}
+
+.stripe-error-boundary__content {
+  max-width: 600px;
+  background: white;
+  border-radius: 12px;
+  padding: 3rem 2rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.stripe-error-boundary__icon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 2rem;
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stripe-error-boundary__icon svg {
+  width: 48px;
+  height: 48px;
+  color: white;
+  stroke-width: 3;
+}
+
+.stripe-error-boundary__content h2 {
+  margin: 0 0 1rem 0;
+  font-size: 1.75rem;
+  color: #1a1a1a;
+}
+
+.stripe-error-boundary__message {
+  margin: 0 0 2rem 0;
+  font-size: 1rem;
+  color: #6b7280;
+  line-height: 1.6;
+}
+
+.stripe-error-boundary__details {
+  text-align: left;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 2rem;
+}
+
+.stripe-error-boundary__details summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 0.5rem;
+}
+
+.stripe-error-boundary__details pre {
+  margin: 0.5rem 0 0 0;
+  padding: 0.75rem;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  overflow-x: auto;
+  color: #dc2626;
+}
+
+.stripe-error-boundary__actions {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.stripe-error-boundary__actions button {
+  flex: 1;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-reload {
+  background: #3b82f6;
+  color: white;
+}
+
+.btn-reload:hover {
+  background: #2563eb;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.btn-back {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.btn-back:hover {
+  background: #e5e7eb;
+}
+
+.stripe-error-boundary__help {
+  padding-top: 1.5rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+.stripe-error-boundary__help p {
+  margin: 0;
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.stripe-error-boundary__help a {
+  color: #3b82f6;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.stripe-error-boundary__help a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 640px) {
+  .stripe-error-boundary__content {
+    padding: 2rem 1.5rem;
+  }
+
+  .stripe-error-boundary__content h2 {
+    font-size: 1.5rem;
+  }
+
+  .stripe-error-boundary__actions {
+    flex-direction: column;
+  }
+}

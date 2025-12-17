@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { pedidosService } from '../../services/pedidos-service';
 import RatingModal from '../../components/RatingModal';
 import { Button } from '../../components/ui/index';
+import { Badge } from '../../components/ui/badge';
 import './MyOrders.css';
 
 const MyOrders = () => {
@@ -45,6 +46,34 @@ const MyOrders = () => {
       'Cancelado': 'status-cancelled'
     };
     return classes[estado] || 'status-default';
+  };
+
+  const getEstadoPagoVariant = (estadoPago) => {
+    const variants = {
+      'Pendiente de Pago': 'warning',
+      'Pagado': 'success',
+      'paid': 'success',
+      'Fallido': 'danger',
+      'failed': 'danger',
+      'Reembolsado': 'info',
+    };
+    return variants[estadoPago] || 'default';
+  };
+
+  const getEstadoPagoText = (estadoPago) => {
+    const texts = {
+      'paid': 'Pagado',
+      'failed': 'Fallido',
+      'Pendiente de Pago': 'Pendiente de Pago',
+      'Pagado': 'Pagado',
+      'Fallido': 'Fallido',
+      'Reembolsado': 'Reembolsado',
+    };
+    return texts[estadoPago] || estadoPago;
+  };
+
+  const handlePayNow = (pedidoId) => {
+    navigate(`/checkout/${pedidoId}`);
   };
 
   const getEstadoIcon = (estado) => {
@@ -92,7 +121,7 @@ const MyOrders = () => {
 
   if (loading) {
     return (
-      <div className="my-orders-container">
+      <div className="mis-pedidos-container">
         <div className="loading-spinner">
           <div className="spinner"></div>
           <p>Cargando tus pedidos...</p>
@@ -103,7 +132,7 @@ const MyOrders = () => {
 
   if (error) {
     return (
-      <div className="my-orders-container">
+      <div className="mis-pedidos-container">
         <div className="error-message">
           <span className="error-icon">⚠️</span>
           <p>{error}</p>
@@ -114,7 +143,7 @@ const MyOrders = () => {
   }
 
   return (
-    <div className="my-orders-container">
+    <div className="mis-pedidos-container">
       <div className="orders-header">
         <div className="orders-badge">📦 Seguimiento de Pedidos</div>
         <div className="orders-title-wrapper">
@@ -170,9 +199,16 @@ const MyOrders = () => {
                     <span className="order-date">{formatDate(order.fecha_creacion)}</span>
                   </div>
                 </div>
-                <div className={`order-status ${getEstadoClass(order.estado)}`}>
-                  <span className="status-icon">{getEstadoIcon(order.estado)}</span>
-                  <span className="status-text">{order.estado}</span>
+                <div className="order-status-badges">
+                  <div className={`order-status ${getEstadoClass(order.estado)}`}>
+                    <span className="status-icon">{getEstadoIcon(order.estado)}</span>
+                    <span className="status-text">{order.estado}</span>
+                  </div>
+                  {order.estado_pago && (
+                    <Badge variant={getEstadoPagoVariant(order.estado_pago)}>
+                      {getEstadoPagoText(order.estado_pago)}
+                    </Badge>
+                  )}
                 </div>
               </div>
 
@@ -298,6 +334,26 @@ const MyOrders = () => {
                       </div>
                     ))}
                   </div>
+                </div>
+              )}
+
+              {/* Payment Action Button */}
+              {(order.estado === 'Pendiente' || order.estado_pago === 'Pendiente de Pago') && (
+                <div className="order-actions">
+                    <div className="payment-notice">
+                      <svg className="notice-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <line x1="12" y1="8" x2="12" y2="12"/>
+                        <line x1="12" y1="16" x2="12.01" y2="16"/>
+                      </svg>
+                      <span>Este pedido está pendiente de pago. Completa tu pago para procesarlo.</span>
+                    </div>
+                  <Button 
+                    onClick={() => handlePayNow(order.id)}
+                    className="btn-pay-now"
+                  >
+                    💳 Completar Pago
+                  </Button>
                 </div>
               )}
             </div>
