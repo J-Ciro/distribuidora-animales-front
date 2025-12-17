@@ -10,5 +10,12 @@ export default defineConfig({
   build: {
     outDir: 'build',
     sourcemap: false
+  },
+  optimizeDeps: {
+    esbuildOptions: {
+      define: {
+        global: 'globalThis'
+      }
+    }
   }
 })
