@@ -9,13 +9,23 @@ export const productosService = {
     if (subcategoria_id) params.subcategoria_id = subcategoria_id;
     const response = await apiClient.get('/home/productos', { params });
     const productos = response.data;
-    
-    // Enriquecer productos con calificaciones
+
+    // If backend already returned rating stats in the product objects, skip extra enrichment
+    if (Array.isArray(productos) && productos.length > 0 && productos[0].hasOwnProperty('promedio_calificacion')) {
+      // Ensure defaults for any missing stat fields
+      productos.forEach(producto => {
+        if (producto.promedio_calificacion === undefined) producto.promedio_calificacion = 0;
+        if (producto.total_calificaciones === undefined) producto.total_calificaciones = 0;
+      });
+      return productos;
+    }
+
+    // Backward-compat: enrich products by fetching stats per product (kept as fallback)
     if (Array.isArray(productos) && productos.length > 0) {
       try {
         const productIds = productos.map(p => p.id);
         const statsMap = await calificacionesService.getProductsStats(productIds);
-        
+
         // Agregar stats a cada producto
         productos.forEach(producto => {
           const stats = statsMap[producto.id];
@@ -36,7 +46,7 @@ export const productosService = {
         });
       }
     }
-    
+
     return productos;
   },
 

@@ -39,7 +39,7 @@ const VerificationCodePage = () => {
     }
     setLoading(true);
     try {
-      await authService.resendVerificationCode(email);
+      await authService.resendVerificationCode({ email });
       showToast("Código reenviado. Revisa tu correo.", "success");
     } catch (error) {
       if (!error?._toastsShown) showToast(error?.message || "No se pudo reenviar el código.", "error");

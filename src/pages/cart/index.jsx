@@ -83,11 +83,15 @@ export const CartPage = () => {
         })),
       };
 
-      await pedidosService.createOrder(orderData);
+      const response = await pedidosService.createOrder(orderData);
+      const pedidoId = response.id;
+      
       clearCart();
       setShowCheckoutForm(false);
-      toast.success('¡Pedido creado exitosamente! Pronto recibirás la confirmación.');
-      navigate('/');
+      toast.success('¡Pedido creado exitosamente! Redirigiendo a pago...');
+      
+      // Navegar a checkout con el ID del pedido para proceder con el pago
+      navigate(`/checkout/${pedidoId}`);
     } catch (error) {
       console.error('Error creating order:', error);
       

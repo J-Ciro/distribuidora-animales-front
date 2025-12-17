@@ -4,9 +4,15 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        # Pasar la URL del API al build para que React la incorpore en la compilación
+        REACT_APP_API_URL: ${REACT_APP_API_URL:-http://localhost:8000/api}
     ports:
       - "3000:80"
     environment:
       # Puede ajustarse antes de levantar el servicio
+      # La app compilada corre en el navegador del usuario; el API debe ser alcanzable desde el navegador.
+      # Por defecto apuntamos a http://localhost:8000/api (si tu backend expone el puerto 8000 en el host).
       - REACT_APP_API_URL=${REACT_APP_API_URL:-http://localhost:8000/api}
+    # No depende de servicios internos: el backend lo referenciamos mediante host.docker.internal
     restart: unless-stopped

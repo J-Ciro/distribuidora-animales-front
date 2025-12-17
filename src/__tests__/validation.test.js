@@ -1,3 +1,5 @@
+import { describe, test, expect, beforeEach, afterEach, vi } from 'vitest'
+
 /**
  * Tests unitarios para utilidades de validación
  */

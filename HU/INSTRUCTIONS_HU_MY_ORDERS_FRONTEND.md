@@ -26,7 +26,7 @@
 
 **Ubicación**: `src/pages/MyOrdersPage.jsx`
 
-**Ruta**: `/mi-cuenta/pedidos` o `/my-orders`
+**Ruta**: `/mi-cuenta/pedidos` o `/mis-pedidos`
 
 **Código Completo**:
 ```jsx
@@ -88,7 +88,7 @@ const MyOrdersPage = () => {
   };
 
   return (
-    <div className="my-orders-page">
+    <div className="mis-pedidos-page">
       <div className="page-header">
         <h1>Mis Pedidos</h1>
         <p className="subtitle">Historial completo de tus compras</p>
@@ -537,7 +537,7 @@ class PedidosService {
    */
   async getMyOrders({ skip = 0, limit = 20, estado } = {}) {
     try {
-      const response = await apiClient.get('/pedidos/my-orders', {
+      const response = await apiClient.get('/pedidos/mis-pedidos', {
         params: { skip, limit, estado }
       });
       return response.data;
@@ -554,7 +554,7 @@ class PedidosService {
    */
   async getMyOrderDetail(pedidoId) {
     try {
-      const response = await apiClient.get(`/pedidos/my-orders/${pedidoId}`);
+      const response = await apiClient.get(`/pedidos/mis-pedidos/${pedidoId}`);
       return response.data;
     } catch (error) {
       console.error('Error en getMyOrderDetail:', error);
@@ -569,7 +569,7 @@ class PedidosService {
    */
   async getMyOrderHistory(pedidoId) {
     try {
-      const response = await apiClient.get(`/pedidos/my-orders/${pedidoId}/historial`);
+      const response = await apiClient.get(`/pedidos/mis-pedidos/${pedidoId}/historial`);
       return response.data;
     } catch (error) {
       console.error('Error en getMyOrderHistory:', error);
@@ -586,7 +586,7 @@ class PedidosService {
   async cancelMyOrder(pedidoId, data) {
     try {
       const response = await apiClient.post(
-        `/pedidos/my-orders/${pedidoId}/cancelar`,
+        `/pedidos/mis-pedidos/${pedidoId}/cancelar`,
         data
       );
       return response.data;
@@ -606,7 +606,7 @@ export const pedidosService = new PedidosService();
 
 ### MyOrdersPage.css:
 ```css
-.my-orders-page {
+.mis-pedidos-page {
   max-width: 1200px;
   margin: 0 auto;
   padding: 24px;
@@ -1006,7 +1006,7 @@ export const pedidosService = new PedidosService();
 
 ```css
 @media (max-width: 768px) {
-  .my-orders-page {
+  .mis-pedidos-page {
     padding: 16px;
   }
 
@@ -1040,7 +1040,7 @@ export const pedidosService = new PedidosService();
 ## ✅ Criterios de Aceptación Frontend
 
 ### AC 1: Visualización de pedidos
-- **Dado**: Usuario autenticado accede a `/my-orders`
+- **Dado**: Usuario autenticado accede a `/mis-pedidos`
 - **Cuando**: Página carga
 - **Entonces**: Ver lista de pedidos ordenados por fecha (más recientes primero)
 
