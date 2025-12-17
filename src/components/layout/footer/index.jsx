@@ -19,8 +19,8 @@ export const Footer = () => {
           {/* Sección de Logo y Descripción */}
           <div className="footer-section footer-brand">
             <div className="footer-logo">
-              <img src="/logo3.webp" alt="Soft PetPlace" className="footer-logo-image" />
-              <span className="logo-text">Soft PetPlace</span>
+              <img src="/logo3.webp" alt="Distribuidora Perro y Gatos" className="footer-logo-image" />
+              <span className="logo-text">Distribuidora Perro y Gatos</span>
             </div>
             <p className="footer-description">
               Tu tienda de confianza para productos de calidad para mascotas
@@ -90,7 +90,7 @@ export const Footer = () => {
         {/* Copyright */}
         <div className="footer-bottom">
           <p className="footer-text">
-            © {currentYear} Soft PetPlace. Todos los derechos reservados.
+            © {currentYear} Distribuidora Perro y Gatos. Todos los derechos reservados.
           </p>
         </div>
       </div>

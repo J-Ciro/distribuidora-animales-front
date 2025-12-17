@@ -22,9 +22,9 @@ export const Header = () => {
     <header className="header" role="banner">
       <div className="header-container">
         <Link to="/" className="header-logo" aria-label="Inicio">
-          <img src="/logo3.webp" alt="Soft PetPlace" className="logo-image" />
+          <img src="/logo3.webp" alt="Distribuidora Perro y Gatos" className="logo-image" />
           <span className="logo-text">
-            <span className="logo-main">Soft PetPlace</span>
+            <span className="logo-main">Distribuidora Perro y Gatos</span>
           </span>
         </Link>
 
