@@ -6,15 +6,16 @@ import { formatPrice, formatDate } from '../../../utils/validation';
 import { toast } from '../../../utils/toast';
 import './style.css';
 
-const ORDER_STATUSES = ['Pendiente', 'Enviado', 'Entregado', 'Cancelado'];
+const ORDER_STATUSES = ['Pendiente', 'Pagado', 'Enviado', 'Entregado', 'Cancelado'];
 const FILTER_OPTIONS = ['Todos', ...ORDER_STATUSES];
 
 const getValidTransitions = (currentStatus) => {
   const transitions = {
-    'Pendiente': ['Enviado', 'Cancelado'],
+    'Pendiente': [],  // Solo el sistema de pago puede cambiar a 'Pagado'
+    'Pagado': ['Enviado', 'Cancelado'],
     'Enviado': ['Entregado', 'Cancelado'],
-    'Entregado': [],
-    'Cancelado': [],
+    'Entregado': [],  // Estado final
+    'Cancelado': [],  // Estado final
   };
   return transitions[currentStatus] || [];
 };
