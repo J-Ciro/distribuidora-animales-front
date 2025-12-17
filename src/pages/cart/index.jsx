@@ -71,15 +71,15 @@ export const CartPage = () => {
     setIsProcessing(true);
     try {
       const orderData = {
-        usuario_id: user.id,
-        direccion_entrega: formData.direccion_entrega,
-        telefono_contacto: formData.telefono_contacto,
-        metodo_pago: formData.metodo_pago,
-        nota_especial: formData.nota_especial || '',
+        direccion_id: formData.direccion_id, // ID de dirección seleccionada
+        telefonoContacto: formData.telefono_contacto,
+        metodoPago: formData.metodo_pago,
+        notaEspecial: formData.nota_especial || '',
         productos: cart.map(item => ({
-          producto_id: item.id,
+          sku: item.id,
+          nombre: item.nombre,
           cantidad: item.quantity ?? item.cantidad ?? 1,
-          precio_unitario: item.precio,
+          precioUnitario: item.precio,
         })),
       };
 
@@ -94,7 +94,13 @@ export const CartPage = () => {
       navigate(`/checkout/${pedidoId}`);
     } catch (error) {
       console.error('Error creating order:', error);
-      if (!error?._toastsShown) toast.error('Error al procesar el pedido');
+      
+      // Manejo específico del error NO_ADDRESS del backend
+      if (error?.response?.data?.code === 'NO_ADDRESS') {
+        toast.error('Debes agregar al menos una dirección de entrega antes de realizar un pedido.');
+      } else if (!error?._toastsShown) {
+        toast.error(error?.response?.data?.message || 'Error al procesar el pedido');
+      }
     } finally {
       setIsProcessing(false);
     }
