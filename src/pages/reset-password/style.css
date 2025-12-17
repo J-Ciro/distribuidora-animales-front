@@ -1,0 +1,132 @@
+/* Styles for Reset Password page */
+.reset-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 16px;
+  min-height: 100vh;
+}
+
+.reset-container {
+  width: 100%;
+  max-width: 480px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 32px;
+  box-shadow: 0 6px 18px rgba(13, 27, 62, 0.06);
+}
+
+.reset-title {
+  margin: 0 0 24px 0;
+  font-size: 22px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.reset-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.reset-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #374151;
+}
+
+.reset-input {
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: border-color 0.2s;
+}
+
+.reset-input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+.reset-input.error {
+  border-color: #dc2626;
+  background-color: #fef2f2;
+}
+
+.reset-error {
+  padding: 6px 10px;
+  background-color: #fee2e2;
+  border: 1px solid #fecaca;
+  border-radius: 4px;
+  color: #991b1b;
+  font-size: 13px;
+}
+
+.password-requirements {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 10px;
+  background-color: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+}
+
+.requirement {
+  font-size: 13px;
+  color: #6b7280;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.requirement.met {
+  color: #059669;
+  font-weight: 500;
+}
+
+.reset-button {
+  margin-top: 8px;
+  background: var(--color-primary);
+  color: white;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.reset-button:hover:not([disabled]) {
+  background-color: #4f46e5;
+  opacity: 0.9;
+}
+
+.reset-button[disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.reset-links {
+  margin-top: 16px;
+  display: flex;
+  justify-content: center;
+}
+
+.reset-link {
+  color: var(--color-primary);
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.reset-link:hover {
+  text-decoration: underline;
+}

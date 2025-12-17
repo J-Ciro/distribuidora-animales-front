@@ -6,6 +6,7 @@ import { AdminLayout } from './components/layout/admin-layout';
 import { ProtectedRoute } from './components/layout/protected-route';
 import { HomePage } from './pages/home';
 import RecoverPasswordPage from './pages/recover-password';
+import ResetPasswordPage from './pages/reset-password';
 import VerificationCodePage from './pages/verification-code';
 import { LoginPage } from './pages/login';
 import { RegisterPage } from './pages/register';
@@ -125,6 +126,14 @@ function App() {
         element={
           <MainLayout>
             <RecoverPasswordPage />
+          </MainLayout>
+        }
+      />
+      <Route
+        path="/reset-password"
+        element={
+          <MainLayout>
+            <ResetPasswordPage />
           </MainLayout>
         }
       />
