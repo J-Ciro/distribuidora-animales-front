@@ -1,5 +1,5 @@
 # Multistage Dockerfile para construir y servir el frontend React
-FROM node:18-alpine AS build
+FROM node:20-alpine AS build
 WORKDIR /app
 
 # Copiar package.json y package-lock.json para aprovechar cache
