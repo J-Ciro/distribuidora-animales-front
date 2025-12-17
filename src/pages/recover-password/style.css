@@ -52,6 +52,17 @@
   cursor: pointer;
 }
 
+.recover-error {
+  padding: 8px 12px;
+  background-color: #fee2e2;
+  border: 1px solid #fecaca;
+  border-radius: 6px;
+  color: #991b1b;
+  font-size: 13px;
+  margin-top: -8px;
+  margin-bottom: 8px;
+}
+
 .recover-links {
   margin-top: 12px;
   display: flex;

@@ -54,6 +54,19 @@ export const authService = {
       const response = await apiClient.post('/auth/resend-code', data);
       return response.data;
     },
+    
+    // Forgot password (request recovery link)
+    async forgotPassword(data) {
+      const response = await apiClient.post('/auth/forgot-password', data);
+      return response.data;
+    },
+    
+    // Reset password (with token)
+    async resetPassword(data) {
+      const response = await apiClient.post('/auth/reset-password', data);
+      return response.data;
+    },
+    
     // Listar productos (admin)
     async listarProductos() {
       try {
