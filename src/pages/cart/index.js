@@ -76,18 +76,22 @@ export const CartPage = () => {
         telefono_contacto: formData.telefono_contacto,
         metodo_pago: formData.metodo_pago,
         nota_especial: formData.nota_especial || '',
-        items: cart.map(item => ({
+        productos: cart.map(item => ({
           producto_id: item.id,
           cantidad: item.quantity ?? item.cantidad ?? 1,
           precio_unitario: item.precio,
         })),
       };
 
-      await pedidosService.createOrder(orderData);
+      const response = await pedidosService.createOrder(orderData);
+      const pedidoId = response.id;
+      
       clearCart();
       setShowCheckoutForm(false);
-      toast.success('¡Pedido creado exitosamente! Pronto recibirás la confirmación.');
-      navigate('/');
+      toast.success('¡Pedido creado exitosamente! Redirigiendo a pago...');
+      
+      // Navegar a checkout con el ID del pedido para proceder con el pago
+      navigate(`/checkout/${pedidoId}`);
     } catch (error) {
       console.error('Error creating order:', error);
       if (!error?._toastsShown) toast.error('Error al procesar el pedido');

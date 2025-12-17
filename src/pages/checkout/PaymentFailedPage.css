@@ -1,0 +1,157 @@
+.payment-failed {
+  min-height: 100vh;
+  background: #f9fafb;
+  padding: 2rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.payment-failed__container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.payment-failed__content {
+  background: white;
+  border-radius: 12px;
+  padding: 3rem 2rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.payment-failed__icon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 2rem;
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: shake 0.5s ease-out;
+}
+
+.payment-failed__icon svg {
+  width: 48px;
+  height: 48px;
+  color: white;
+  stroke-width: 3;
+}
+
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-10px);
+  }
+  75% {
+    transform: translateX(10px);
+  }
+}
+
+.payment-failed__content h1 {
+  margin: 0 0 1rem 0;
+  font-size: 2rem;
+  color: #1a1a1a;
+}
+
+.payment-failed__message {
+  margin: 0 0 2rem 0;
+  font-size: 1rem;
+  color: #6b7280;
+  line-height: 1.6;
+}
+
+.payment-failed__reasons {
+  text-align: left;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.payment-failed__reasons h3 {
+  margin: 0 0 1rem 0;
+  font-size: 1rem;
+  color: #1a1a1a;
+}
+
+.payment-failed__reasons ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.payment-failed__reasons li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.5rem 0;
+  font-size: 0.875rem;
+  color: #6b7280;
+  line-height: 1.5;
+}
+
+.payment-failed__reasons li svg {
+  flex-shrink: 0;
+  margin-top: 0.125rem;
+  color: #ef4444;
+}
+
+.payment-failed__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.payment-failed__actions button {
+  width: 100%;
+}
+
+.payment-failed__help {
+  padding-top: 1.5rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+.payment-failed__help p {
+  margin: 0;
+  font-size: 0.875rem;
+  color: #6b7280;
+  line-height: 1.5;
+}
+
+.payment-failed__help a {
+  color: #3b82f6;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.payment-failed__help a:hover {
+  text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .payment-failed__content {
+    padding: 2rem 1.5rem;
+  }
+
+  .payment-failed__content h1 {
+    font-size: 1.5rem;
+  }
+
+  .payment-failed__icon {
+    width: 64px;
+    height: 64px;
+  }
+
+  .payment-failed__icon svg {
+    width: 40px;
+    height: 40px;
+  }
+}
